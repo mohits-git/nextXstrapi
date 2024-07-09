@@ -30,7 +30,7 @@ export default function Home() {
           <div className="relative rounded-full w-[600px] h-[600px] -ml-20">
             <Image
               fill
-              src={"/model-image.jpg"}
+              src={process.env.IMAGE_URL || ""}
               alt="Model Image"
               className="object-cover rounded-full"
             />
