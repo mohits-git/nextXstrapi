@@ -3,11 +3,11 @@ export default async function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/landing-pages?populate=*`, {
+      const response = await fetch(`${process.env.BACKEND_URL}/api/landing-pages?populate=*`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+          "Authorization": `bearer ${process.env.API_TOKEN}`
         },
         next: {
           revalidate: 10,
