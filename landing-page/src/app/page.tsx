@@ -19,6 +19,7 @@ export default async function Home() {
     } catch (error: any) {
       console.log("Something went wrong");
       console.log(error.message);
+      console.log(error);
     }
     return null;
   }
@@ -74,7 +75,7 @@ export default async function Home() {
             {data && (
               <Image
                 fill
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${data.modelImage.data.attributes.url}`}
+                src={`${process.env.BACKEND_URL}${data.modelImage.data.attributes.url}`}
                 alt="Model Image"
                 className="object-cover rounded-full"
               />
