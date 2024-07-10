@@ -1,11 +1,50 @@
+'use client';
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [data, setData] = useState<any>(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/landing-pages?populate=*`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+              }
+          });
+        const result = await response.json();
+        if (result) setData(result.data[0].attributes);
+        else throw Error("Something went wrong")
+      } catch (error: any) {
+        console.log("Something went wrong");
+        console.log(error.message);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (!data) return (
+    <main className="flex min-h-screen flex-col items-center p-24 space-y-8">
+      <div>
+        Loading...
+      </div>
+    </main>
+  )
   return (
     <main className="flex min-h-screen flex-col items-center p-24 space-y-8">
       <h3 className="text-xl text-maroon font-semibold">-WHY CHOOSE US</h3>
-      <h1 className="font-bold text-5xl">We Different From Others</h1>
-      <p className="text-slate-700 max-w-2xl text-center text-xl leading-relaxed">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perferendis ex assumenda vero atque. Cupiditate sit autem quo, nobis fuga maiores magni.</p>
+      <h1 className="font-bold text-5xl">
+        {data.header}
+      </h1>
+      <p className="text-slate-700 max-w-2xl text-center text-xl leading-relaxed">
+        {data.description[0].children.map((para: { type: string, text: string }, index: number) => (
+          <span key={index}>
+            {para.text}
+          </span>
+        ))}
+      </p>
       <div className="flex items-center justify-center">
         <div className="flex items-center justify-center py-24 px-12">
           <div className="relative rounded-full w-[550px] h-[550px] bg-maroon/90 flex flex-col items-center justify-center text-white p-24 z-[10]">
@@ -20,20 +59,26 @@ export default function Home() {
               </svg>
             </div>
             <h2 className="font-bold text-[1.75rem] w-full mb-3">
-              Industry Experts
+              {data.subheading}
             </h2>
             <p className="text-xl w-full leading-relaxed">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat ducimus id officia ut quos non ipsam dicta
+              {data.subdescription[0].children.map((para: { type: string, text: string }, index: number) => (
+                <span key={index}>
+                  {para.text}
+                </span>
+              ))}
             </p>
             <div className="absolute bottom-[8%] right-[15%] rounded-full w-[40px] h-[40px] bg-black text-black" />
           </div>
           <div className="relative rounded-full w-[600px] h-[600px] -ml-20">
-            <Image
-              fill
-              src={process.env.IMAGE_URL || ""}
-              alt="Model Image"
-              className="object-cover rounded-full"
-            />
+            {data && (
+              <Image
+                fill
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${data.modelImage.data.attributes.url}`}
+                alt="Model Image"
+                className="object-cover rounded-full"
+              />
+            )}
             <div className="absolute bottom-[1%] right-[3%] rounded-full w-[140px] h-[140px] overflow-hidden opacity-80 rotate-[25deg] text-maroon">
               <svg width="100%" height="100%">
                 <defs>
@@ -47,10 +92,10 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-center space-y-6 mx-12">
-          {services.map((service, index) => (
-            <Service 
-              key={service}
-              service={service}
+          {data.Properties.map((service: { id: number, value: string }, index: number) => (
+            <Service
+              key={service.id}
+              service={service.value}
               selected={index === 0}
             />
           ))}
@@ -60,13 +105,13 @@ export default function Home() {
   );
 }
 
-const services = [
-  "Industry Experts",
-  "Dedicated Team",
-  "Outcome Focused",
-  "High Quality Service",
-  "Cyber Security Expert"
-]
+// const services = [
+//   "Industry Experts",
+//   "Dedicated Team",
+//   "Outcome Focused",
+//   "High Quality Service",
+//   "Cyber Security Expert"
+// ]
 
 type ServiceProps = {
   service: string;
