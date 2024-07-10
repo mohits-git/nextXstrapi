@@ -1,29 +1,29 @@
-'use client';
 import Image from "next/image";
-import { useEffect, useState } from "react";
+export default async function Home() {
 
-export default function Home() {
-  const [data, setData] = useState<any>(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/landing-pages?populate=*`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
-              }
-          });
-        const result = await response.json();
-        if (result) setData(result.data[0].attributes);
-        else throw Error("Something went wrong")
-      } catch (error: any) {
-        console.log("Something went wrong");
-        console.log(error.message);
-      }
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/landing-pages?populate=*`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+        },
+        next: {
+          revalidate: 10,
+        }
+      });
+      const result = await response.json();
+      if (result) return result.data[0].attributes;
+      else throw Error("Something went wrong")
+    } catch (error: any) {
+      console.log("Something went wrong");
+      console.log(error.message);
     }
-    fetchData();
-  }, []);
+    return null;
+  }
+
+  const data = await fetchData();
 
   if (!data) return (
     <main className="flex min-h-screen flex-col items-center p-24 space-y-8">
