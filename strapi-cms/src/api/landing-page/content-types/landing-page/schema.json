@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "landing_pages",
+  "info": {
+    "singularName": "landing-page",
+    "pluralName": "landing-pages",
+    "displayName": "Landing Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "header": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255,
+      "unique": false,
+      "minLength": 1,
+      "default": "We Different From Others"
+    }
+  }
+}
