@@ -368,6 +368,7 @@ export interface ApiLandingPageLandingPage extends Schema.CollectionType {
     singularName: 'landing-page';
     pluralName: 'landing-pages';
     displayName: 'Landing Page';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -380,6 +381,13 @@ export interface ApiLandingPageLandingPage extends Schema.CollectionType {
         maxLength: 255;
       }> &
       Attribute.DefaultTo<'We Different From Others'>;
+    description: Attribute.Blocks & Attribute.Required;
+    subheading: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'Industry Experts'>;
+    subdescription: Attribute.Blocks;
+    Properties: Attribute.Component<'properties.properties', true>;
+    modelImage: Attribute.Media<'images'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

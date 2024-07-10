@@ -4,7 +4,8 @@
   "info": {
     "singularName": "landing-page",
     "pluralName": "landing-pages",
-    "displayName": "Landing Page"
+    "displayName": "Landing Page",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,6 +19,32 @@
       "unique": false,
       "minLength": 1,
       "default": "We Different From Others"
+    },
+    "description": {
+      "type": "blocks",
+      "required": true
+    },
+    "subheading": {
+      "type": "string",
+      "required": true,
+      "default": "Industry Experts"
+    },
+    "subdescription": {
+      "type": "blocks"
+    },
+    "Properties": {
+      "displayName": "properties",
+      "type": "component",
+      "repeatable": true,
+      "component": "properties.properties"
+    },
+    "modelImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }
